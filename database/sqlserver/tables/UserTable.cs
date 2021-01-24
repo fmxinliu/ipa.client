@@ -49,10 +49,10 @@ namespace database.sqlserver {
                 return false;
             }
             // SQL拼接
-            int recordsAffected = SQLServerHelper.ExecuteNonQuery(
+            Int32 recordsAffected = SQLServerHelper.ExecuteNonQuery(
                 String.Format(connectionString1, getDBName()),
                 String.Format("insert into {0} ({1}) values ({2})",
-                    this.getTableName(), this.getFieldString(string.Empty), this.getValueString(user, "'")),
+                    this.getTableName(), this.getFieldString(String.Empty), this.getValueString(user, "'")),
                 CommandType.Text);
             return recordsAffected > 0;
         }
@@ -62,13 +62,13 @@ namespace database.sqlserver {
                 return false;
             }
 
-            int recordsAffected = SQLServerHelper.ExecuteNonQuery(
+            Int32 recordsAffected = SQLServerHelper.ExecuteNonQuery(
                 String.Format(connectionString1, getDBName()),
                 this.getSafeSqlForInsert(),
                 CommandType.Text,
                 this.getSafeInsertParams(user));
             //// 防止SQL注入
-            //int recordsAffected = SQLServerHelper.ExecuteNonQuery(
+            //Int32 recordsAffected = SQLServerHelper.ExecuteNonQuery(
             //    String.Format(connectionString1, getDBName()),
             //    "insert into [user] (username,password) values (@username,@password)",
             //    CommandType.Text,

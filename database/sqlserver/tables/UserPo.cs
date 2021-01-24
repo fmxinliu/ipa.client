@@ -4,7 +4,7 @@ using database.bean;
 namespace database.sqlserver {
     public class UserPo {
         [Column("id", "int identity(1, 1) PRIMARY KEY", true)]
-        public int ProductId { get; set; }
+        public Int32 Id { get; set; }
 
         [Column("username", "varchar(32) NOT NULL")]
         public String UserName { get; set; }

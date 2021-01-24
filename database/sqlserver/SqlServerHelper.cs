@@ -4,19 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 
 namespace database.sqlserver {
-    public abstract class SQLServerHelper {
-        //public static readonly string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SQLConnString"].ConnectionString;
-
-        #region public static string GetConnectionStringByConfig()
-        /// <summary>
-        /// 读取配置文件的ConnectionString字符串
-        /// </summary>
-        /// <returns>Connection连接字符串</returns>
-        ////public static string GetConnectionStringByConfig() {
-        ////    return System.Configuration.ConfigurationManager.ConnectionStrings["SQLConnString"].ConnectionString;
-        ////}
-        #endregion
-
+    public static partial class SQLServerHelper {
         #region 执行SQL，返回被操作的行数
 
         /// <summary>
@@ -28,11 +16,11 @@ namespace database.sqlserver {
         /// <param name="cmdType">Command类型，SQL语句或存储过程</param>
         /// <param name="commandParameters">参数数组</param>
         /// <returns>返回被操作行数</returns>
-        public static int ExecuteNonQuery(string connectionString, string cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
+        public static Int32 ExecuteNonQuery(String connectionString, String cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
             SqlCommand cmd = new SqlCommand();
             using (SqlConnection conn = new SqlConnection(connectionString)) {
                 PrepareCommand(cmd, conn, null, cmdType, cmdText, commandParameters);
-                int val = cmd.ExecuteNonQuery();
+                Int32 val = cmd.ExecuteNonQuery();
                 cmd.Parameters.Clear();
                 return val;
             }
@@ -49,10 +37,10 @@ namespace database.sqlserver {
         /// <param name="cmdType">command命令类型，SQL语句或存储过程</param>
         /// <param name="commandParameters">参数数组</param>
         /// <returns></returns>
-        public static int ExecuteNonQuery(SqlConnection connection, string cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
+        public static Int32 ExecuteNonQuery(SqlConnection connection, String cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
             SqlCommand cmd = new SqlCommand();
             PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
-            int val = cmd.ExecuteNonQuery();
+            Int32 val = cmd.ExecuteNonQuery();
             cmd.Parameters.Clear();
             return val;
         }
@@ -68,10 +56,10 @@ namespace database.sqlserver {
         /// <param name="cmdType">command类型，SQL语句或存储过程</param>
         /// <param name="commandParameters">参数数组</param>
         /// <returns></returns>
-        public static int ExecuteNonQuery(SqlTransaction trans, string cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
+        public static Int32 ExecuteNonQuery(SqlTransaction trans, String cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
             SqlCommand cmd = new SqlCommand();
             PrepareCommand(cmd, trans.Connection, trans, cmdType, cmdText, commandParameters);
-            int val = cmd.ExecuteNonQuery();
+            Int32 val = cmd.ExecuteNonQuery();
             cmd.Parameters.Clear();
             return val;
         }
@@ -89,7 +77,7 @@ namespace database.sqlserver {
         /// <param name="cmdType">command命令类型，SQL语句或存储过程</param>
         /// <param name="commandParameters">参数数组</param>
         /// <returns></returns>
-        public static SqlDataReader ExecuteReader(string connectionString, string cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
+        public static SqlDataReader ExecuteReader(String connectionString, String cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
             SqlCommand cmd = new SqlCommand();
             SqlConnection conn = new SqlConnection(connectionString);
 
@@ -117,7 +105,7 @@ namespace database.sqlserver {
         /// <param name="cmdType">command命令类型，SQL语句或存储过程</param>
         /// <param name="commandParameters">参数数组</param>
         /// <returns></returns>
-        public static SqlDataReader ExecuteReader(SqlConnection connection, string cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
+        public static SqlDataReader ExecuteReader(SqlConnection connection, String cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
             SqlCommand cmd = new SqlCommand();
 
             try {
@@ -143,7 +131,7 @@ namespace database.sqlserver {
         /// <param name="cmdType">command命令类型，SQL语句或存储过程</param>
         /// <param name="commandParameters">参数数组</param>
         /// <returns></returns>
-        public static DataTable ExecuteDataTable(string connectionString, string cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
+        public static DataTable ExecuteDataTable(String connectionString, String cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
             DataTable dt = new DataTable();
             SqlCommand cmd = new SqlCommand();
 
@@ -169,7 +157,7 @@ namespace database.sqlserver {
         /// <param name="cmdType">Command命令类型，SQL语句或存储过程</param>
         /// <param name="commandParameters">参数数组</param>
         /// <returns></returns>
-        public static DataTable ExecuteDataTable(SqlConnection connection, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters) {
+        public static DataTable ExecuteDataTable(SqlConnection connection, CommandType cmdType, String cmdText, params SqlParameter[] commandParameters) {
             DataTable dt = new DataTable();
             SqlCommand cmd = new SqlCommand();
 
@@ -193,12 +181,12 @@ namespace database.sqlserver {
         /// <param name="cmdType">Command命令类型，SQL语句还是存储过程</param>
         /// <param name="commandParameters">参数数组</param>
         /// <returns></returns>
-        public static object ExecuteScalar(string connectionString, string cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
+        public static Object ExecuteScalar(String connectionString, String cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
             SqlCommand cmd = new SqlCommand();
 
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
-                object val = cmd.ExecuteScalar();
+                Object val = cmd.ExecuteScalar();
                 cmd.Parameters.Clear();
                 return val;
             }
@@ -215,11 +203,11 @@ namespace database.sqlserver {
         /// <param name="cmdType">Command命令类型，SQL语句还是存储过程</param>
         /// <param name="commandParameters">参数数组</param>
         /// <returns></returns>
-        public static object ExecuteScalar(SqlConnection connection, string cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
+        public static Object ExecuteScalar(SqlConnection connection, String cmdText, CommandType cmdType, params SqlParameter[] commandParameters) {
             SqlCommand cmd = new SqlCommand();
 
             PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
-            object val = cmd.ExecuteScalar();
+            Object val = cmd.ExecuteScalar();
             cmd.Parameters.Clear();
             return val;
         }
@@ -233,12 +221,12 @@ namespace database.sqlserver {
         /// <param name="cmdTextes">sql语句列表</param>
         /// <param name="commandParameterses">sql语句列表对应的参数列表，参数列表必须与sql语句列表匹配</param>
         /// <returns>事务执行是否成功</returns>
-        public static bool ExecuteTransaction(SqlConnection conn, List<string> cmdTextes, List<SqlParameter[]> commandParameterses) {
+        public static bool ExecuteTransaction(SqlConnection conn, List<String> cmdTextes, List<SqlParameter[]> commandParameterses) {
             bool flag = false;
             if (cmdTextes.Count == commandParameterses.Count) {
                 SqlTransaction sqlTran = conn.BeginTransaction();
                 try {
-                    for (int i = 0; i < cmdTextes.Count; i++) {
+                    for (Int32 i = 0; i < cmdTextes.Count; i++) {
                         ExecuteNonQuery(sqlTran, cmdTextes[i], CommandType.Text, commandParameterses[i]);
                     }
                     sqlTran.Commit();
@@ -260,13 +248,13 @@ namespace database.sqlserver {
         /// <param name="cmdTextes">sql语句列表</param>
         /// <param name="commandParameterses">sql语句列表对应的参数列表，参数列表必须与sql语句列表匹配</param>
         /// <returns></returns>
-        public static bool ExecuteTransaction(string connectionString, List<string> cmdTextes, List<SqlParameter[]> commandParameterses) {
+        public static bool ExecuteTransaction(String connectionString, List<String> cmdTextes, List<SqlParameter[]> commandParameterses) {
             bool flag = false;
             if (cmdTextes.Count == commandParameterses.Count) {
                 using (SqlConnection conn = new SqlConnection(connectionString)) {
                     SqlTransaction sqlTran = conn.BeginTransaction();
                     try {
-                        for (int i = 0; i < cmdTextes.Count; i++) {
+                        for (Int32 i = 0; i < cmdTextes.Count; i++) {
                             ExecuteNonQuery(sqlTran, cmdTextes[i], CommandType.Text, commandParameterses[i]);
                         }
                         sqlTran.Commit();
@@ -291,21 +279,22 @@ namespace database.sqlserver {
         /// <param name="cmdType">Command命令类型</param>
         /// <param name="cmdText">SQL语句或存储过程名称</param>
         /// <param name="cmdParms">参数数组</param>
-        private static void PrepareCommand(SqlCommand cmd, SqlConnection conn, SqlTransaction trans, CommandType cmdType, string cmdText, SqlParameter[] cmdParms) {
-            if (conn.State != ConnectionState.Open)
+        private static void PrepareCommand(SqlCommand cmd, SqlConnection conn, SqlTransaction trans, CommandType cmdType, String cmdText, SqlParameter[] cmdParms) {
+            if (conn.State != ConnectionState.Open) {
                 conn.Open();
+            }
 
             cmd.Connection = conn;
             cmd.CommandText = cmdText;
 
-            if (trans != null)
+            if (trans != null) {
                 cmd.Transaction = trans;
+            }
 
             cmd.CommandType = cmdType;
 
             if (cmdParms != null) {
-                foreach (SqlParameter parm in cmdParms)
-                    cmd.Parameters.Add(parm);
+                cmd.Parameters.AddRange(cmdParms);
             }
         }
         #endregion

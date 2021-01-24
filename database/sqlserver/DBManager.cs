@@ -86,7 +86,7 @@ namespace database.sqlserver {
         /// <summary>
         /// 当前连接，是否存在表
         /// </summary>
-        public Boolean tableExists(string dbName, String tableName) {
+        public Boolean tableExists(String dbName, String tableName) {
             using (var dr = SQLServerHelper.ExecuteReader(
                 String.Format(connectionString1, dataSource),
                 String.Format(Sql.TABLE_EXISTS, tableName),
@@ -131,7 +131,7 @@ namespace database.sqlserver {
         /// 创建表
         /// </summary>
         public Boolean createTable(String dbName, String tableName, Type type) {
-            int row = SQLServerHelper.ExecuteNonQuery(
+            Int32 row = SQLServerHelper.ExecuteNonQuery(
                 String.Format(connectionString1, dataSource),
                 String.Format(Sql.CREATE_TABLE, tableName, getTableColumnDefinition(type)),
                 CommandType.Text); 
