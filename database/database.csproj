@@ -44,6 +44,8 @@
   <ItemGroup>
     <Compile Include="bean\Column.cs" />
     <Compile Include="bean\User.cs" />
+    <Compile Include="dapper\DapperHelper.cs" />
+    <Compile Include="dapper\SqlMapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="sqlserver\DBManager.cs" />

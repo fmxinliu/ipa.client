@@ -9,6 +9,7 @@ namespace database {
         static void Main(String[] args) {
             TestNameof();
             TestMSSql();
+            TestDapper();
             Console.ReadKey();
         }
 
@@ -63,7 +64,7 @@ namespace database {
             user.PassWord = "user";
 
             // 更新
-            b = SQLServerHelper.Update(user); // !!!
+            //b = SQLServerHelper.Update(user); // !!!
             b = SQLServerHelper.Update<User, Int32>(user, list.Count);
 
             // 查询
@@ -73,10 +74,32 @@ namespace database {
             user = SQLServerHelper.QueryById<User, Int32>(list.Count, SQLServerHelper.nameof(() => userPo.Id));
 
             // 删除
-            b = SQLServerHelper.Delete(user); // !!!
+            //b = SQLServerHelper.Delete(user); // !!!
             b = SQLServerHelper.Delete<User, Int32>(list.Count);
 
             list = SQLServerHelper.QueryAll<User>();
+        }
+
+        /// <summary>
+        /// Dapper CURD
+        /// </summary>
+        static void TestDapper() {
+            DapperHelper.ConnectionString = SQLServerHelper.GetConnectionStringByConfig();
+            Boolean b1 = DapperHelper.Insert(new User { UserName = "Dapper", PassWord = "dapper" });
+            Boolean b2 = DapperHelper.Insert(Enumerable.Range(1, 10).Select(i => new User {
+                UserName = "Dapper" + i.ToString(),
+                PassWord = "dapper"
+            }));
+
+            Boolean b3 = DapperHelper.Update(new User { UserName = "Dapper", PassWord = "Dapper0" });
+
+            Boolean b4 = DapperHelper.Delete(new User { UserName = "Dapper5" });
+
+            var users = DapperHelper.Query(new User { UserName = "Dapper" });
+
+            foreach (var user in users) {
+                Console.WriteLine(user);
+            }
         }
     }
 }
